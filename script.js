@@ -1,72 +1,64 @@
-(function(){
+let employees = JSON.parse(localStorage.getItem("employees")) || [];
+const form = document.getElementById("employeeForm");
+const tableBody = document.getElementById("employeeTableBody");
+const searchInput = document.getElementById("searchInput");
+
+// Function to display employees
+function displayEmployees(empList) {
+    tableBody.innerHTML = "";
+    empList.forEach((emp, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td data-label="ID">${index + 1}</td>
+            <td data-label="Name">${emp.name}</td>
+            <td data-label="Email">${emp.email}</td>
+            <td data-label="Department">${emp.department}</td>
+            <td data-label="Position">${emp.position}</td>
+            <td data-label="Salary">${emp.salary}</td>
+            <td data-label="Actions">
+                <button class="delete-btn" onclick="deleteEmployee(${index})">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
 }
 
+// Add Employee
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-const newEmp = {id: nextId++, name, email, position, department, salary};
-employees.push(newEmp);
-save();
-render(searchInput.value);
-form.reset();
+    const employee = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        position: document.getElementById("position").value,
+        department: document.getElementById("department").value,
+        salary: document.getElementById("salary").value
+    };
 
-
-// Move focus back to first field for quick entry on mobile
-document.getElementById('name').focus();
-}
-
-
-// Delete employee by id
-function handleDelete(id){
-if(!confirm('Delete this employee?')) return;
-employees = employees.filter(e=> e.id !== id);
-save();
-render(searchInput.value);
-}
-
-
-// Wire events
-function setup(){
-load();
-render();
-form.addEventListener('submit', handleSubmit);
-
-
-// Live search
-searchInput.addEventListener('input', ()=> render(searchInput.value));
-filterDept.addEventListener('change', ()=> render(searchInput.value));
-clearFilters.addEventListener('click', ()=>{ searchInput.value=''; filterDept.value=''; render(); });
-
-
-// Reset confirmation
-resetBtn.addEventListener('click', ()=>{
-// small safety: confirm reset
-if(!confirm('Reset form fields?')){
-// prevent default reset if cancelled
-event && event.preventDefault && event.preventDefault();
-}
+    employees.push(employee);
+    localStorage.setItem("employees", JSON.stringify(employees));
+    displayEmployees(employees);
+    form.reset();
 });
 
-
-// show year in footer
-yearSpan.textContent = new Date().getFullYear();
-
-
-// Mobile menu toggle
-const menuToggle = document.getElementById('menuToggle');
-menuToggle && menuToggle.addEventListener('click', function(){
-const nav = document.querySelector('.nav-list');
-const expanded = this.getAttribute('aria-expanded') === 'true';
-this.setAttribute('aria-expanded', String(!expanded));
-if(nav) nav.style.display = expanded ? 'none' : 'flex';
-});
-
-
-// Accessibility: allow Enter on delete when focused
-tbody.addEventListener('keydown', (ev)=>{
-if(ev.key === 'Enter' && ev.target.matches('button')) ev.target.click();
-});
+// Delete Employee
+function deleteEmployee(index) {
+    employees.splice(index, 1);
+    localStorage.setItem("employees", JSON.stringify(employees));
+    displayEmployees(employees);
 }
 
+// Search Employees
+searchInput.addEventListener("input", function() {
+    const term = searchInput.value.toLowerCase();
+    const filtered = employees.filter(emp => 
+        emp.name.toLowerCase().includes(term) ||
+        emp.department.toLowerCase().includes(term) ||
+        emp.position.toLowerCase().includes(term)
+    );
+    displayEmployees(filtered);
+});
 
-// Initialize app
-setup();
-})();
+// Initial display
+displayEmployees(employees);
