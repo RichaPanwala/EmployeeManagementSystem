@@ -1,0 +1,58 @@
+:root{
+.card h2{margin-top:0}
+
+
+.form{width:100%}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.form-grid label{display:flex;flex-direction:column;font-size:0.95rem}
+.form-grid input, .form-grid select{padding:0.6rem;border-radius:8px;border:1px solid #e6e9ee;font-size:0.95rem}
+.form-actions{display:flex;align-items:center;gap:0.5rem;grid-column:span 3}
+
+
+.btn{padding:0.6rem 0.9rem;border-radius:10px;border:0;background:#e6eefc;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--primary);color:white}
+.btn:active{transform:translateY(1px)}
+
+
+.search-row{display:flex;gap:0.5rem;align-items:center}
+.search-row input[type="search"]{flex:1;padding:0.6rem;border-radius:10px;border:1px solid #e6e9ee}
+
+
+.table-wrap{overflow:auto}
+.employee-table{width:100%;border-collapse:collapse;min-width:720px}
+.employee-table thead{background:#f3f4f6}
+.employee-table th, .employee-table td{padding:0.65rem 0.75rem;text-align:left;border-bottom:1px solid #eef2f7}
+.employee-table td.actions{display:flex;gap:0.5rem}
+
+
+.small{font-size:0.85rem;color:var(--muted)}
+.site-footer{padding:1rem 0;text-align:center;color:var(--muted)}
+
+
+/* Mobile / Responsive */
+@media (max-width:900px){
+.form-grid{grid-template-columns:repeat(2,1fr)}
+.employee-table{min-width:620px}
+}
+
+
+@media (max-width:600px){
+.container{padding:0.5rem}
+.nav-list{display:none}
+.menu-toggle{display:block}
+.form-grid{grid-template-columns:1fr}
+.form-actions{grid-column:auto}
+.employee-table{min-width:420px;font-size:0.95rem}
+.employee-table thead{display:none}
+.employee-table tr{display:block;margin-bottom:0.75rem;background:#fff;border-radius:10px;padding:0.5rem}
+.employee-table td{display:flex;justify-content:space-between;padding:0.5rem;border-bottom:0}
+.employee-table td::before{content:attr(data-label);font-weight:600;color:var(--muted)}
+}
+
+
+/* Touch-friendly sizes */
+button, input, select{touch-action:manipulation}
+
+
+/* Comments: Use W3C validator to check for issues */
+
